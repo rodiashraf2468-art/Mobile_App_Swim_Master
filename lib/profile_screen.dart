@@ -1,112 +1,114 @@
 import 'package:flutter/material.dart';
-import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  static const Color bg = Color(0xFF17152E);
+  static const Color purple = Color(0xFF8B7CF6);
+  static const Color cardBg = Color(0xFF24213F);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFDF6),
+      backgroundColor: bg,
+      appBar: AppBar(
+        backgroundColor: bg,
+        elevation: 0,
+        title: const Text(
+          'Profile',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: const Icon(Icons.settings, size: 24),
-                  color: Colors.white,
-                  style: IconButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E88A8),
-                    padding: const EdgeInsets.all(12),
-                    shape: const CircleBorder(),
+              const Center(
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: purple,
+                  child: Icon(
+                    Icons.person,
+                    size: 50,
+                    color: Colors.white,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsScreen(),
-                      ),
-                    );
-                  },
                 ),
               ),
-
-              const SizedBox(height: 20),
-
-              Center(
-                child: Stack(
-                  alignment: Alignment.bottomRight,
+              const SizedBox(height: 16),
+              const Text(
+                'Rodina Ashraf',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'rodina@example.com',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 32),
+              Container(
+                decoration: BoxDecoration(
+                  color: cardBg,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white12),
+                ),
+                child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: const Color(0xFFDCDCDC),
-                      child: Icon(
-                        Icons.person,
-                        size: 60,
-                        color: Colors.grey[600],
-                      ),
+                    _ProfileMenuItem(
+                      icon: Icons.person_outline,
+                      title: 'Edit Profile',
+                      onTap: () {},
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF1E88A8),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 18,
-                        color: Colors.white,
-                      ),
+                    const Divider(color: Colors.white12, height: 1),
+                    _ProfileMenuItem(
+                      icon: Icons.history,
+                      title: 'My Orders & Quotes',
+                      onTap: () {},
+                    ),
+                    const Divider(color: Colors.white12, height: 1),
+                    _ProfileMenuItem(
+                      icon: Icons.settings_outlined,
+                      title: 'Settings',
+                      onTap: () {},
+                    ),
+                    const Divider(color: Colors.white12, height: 1),
+                    _ProfileMenuItem(
+                      icon: Icons.help_outline,
+                      title: 'Support & Help',
+                      onTap: () {},
                     ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 24),
-
-              const Text(
-                'Captain Mohamed',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.logout, color: Colors.redAccent),
+                  label: const Text(
+                    'Log Out',
+                    style: TextStyle(
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.redAccent),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                 ),
-              ),
-
-              const Text(
-                'Swimming Coach',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              _buildInfoTile(
-                icon: Icons.email_outlined,
-                title: 'Email',
-                value: 'captain.mohamed@gmail.com',
-              ),
-
-              const SizedBox(height: 16),
-
-              _buildInfoTile(
-                icon: Icons.phone_android_outlined,
-                title: 'Phone Number',
-                value: '+20 123 456 7890',
-              ),
-
-              const SizedBox(height: 16),
-
-              _buildInfoTile(
-                icon: Icons.location_on_outlined,
-                title: 'Location',
-                value: 'Cairo, Egypt',
               ),
             ],
           ),
@@ -114,53 +116,36 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildInfoTile({
-    required IconData icon,
-    required String title,
-    required String value,
-  }) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
+class _ProfileMenuItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const _ProfileMenuItem({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon, color: const Color(0xFF8B7CF6)),
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+        ),
       ),
-      child: Row(
-        children: [
-          Icon(icon, color: const Color(0xFF1E88A8), size: 24),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ],
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        color: Colors.white38,
+        size: 16,
       ),
+      onTap: onTap,
     );
   }
 }

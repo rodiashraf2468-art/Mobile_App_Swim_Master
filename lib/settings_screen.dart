@@ -1,93 +1,136 @@
 import 'package:flutter/material.dart';
-import 'booking_screen.dart';
-import 'attendance_screen.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _notificationsEnabled = true;
+  bool _darkModeEnabled = true;
+
+  static const Color bg = Color(0xFF17152E);
+  static const Color purple = Color(0xFF8B7CF6);
+  static const Color cardBg = Color(0xFF24213F);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFDF6),
+      backgroundColor: bg,
+      appBar: AppBar(
+        backgroundColor: bg,
+        elevation: 0,
+        title: const Text(
+          'Settings',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-                color: Colors.white,
-                style: IconButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E88A8),
-                  padding: const EdgeInsets.all(12),
-                  shape: const CircleBorder(),
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-              const SizedBox(height: 24),
-
-
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text(
-                  'Settings',
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
+              const Text(
+                'Preferences',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 40),
-
-
-              Center(
+              const SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  color: cardBg,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white12),
+                ),
                 child: Column(
                   children: [
-
-                    _buildSettingButton(
-                      context,
-                      text: 'Booking',
-                      textColor: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const BookingScreen()),
-                        );
+                    SwitchListTile(
+                      title: const Text(
+                        'Push Notifications',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      secondary: const Icon(Icons.notifications_outlined, color: purple),
+                      activeColor: purple,
+                      value: _notificationsEnabled,
+                      onChanged: (value) {
+                        setState(() {
+                          _notificationsEnabled = value;
+                        });
                       },
                     ),
-                    const SizedBox(height: 18),
-
-                    _buildSettingButton(
-                      context,
-                      text: 'Edit profile',
-                      textColor: Colors.black,
-                      onTap: () {
-                        Navigator.pop(context);
+                    const Divider(color: Colors.white12, height: 1),
+                    SwitchListTile(
+                      title: const Text(
+                        'Dark Mode',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      secondary: const Icon(Icons.dark_mode_outlined, color: purple),
+                      activeColor: purple,
+                      value: _darkModeEnabled,
+                      onChanged: (value) {
+                        setState(() {
+                          _darkModeEnabled = value;
+                        });
                       },
                     ),
-                    const SizedBox(height: 18),
-
-
-                    _buildSettingButton(
-                      context,
-                      text: 'Attendance',
-                      textColor: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const AttendanceScreen()),
-                        );
-                      },
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Support & About',
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  color: cardBg,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white12),
+                ),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.language, color: purple),
+                      title: const Text(
+                        'Language',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: const Text(
+                        'English',
+                        style: TextStyle(color: Colors.white60),
+                      ),
+                      onTap: () {},
                     ),
-                    const SizedBox(height: 35),
-
-
-                    _buildSettingButton(
-                      context,
-                      text: 'Delete account',
-                      textColor: Colors.red,
-                      onTap: () {
-                        _showDeleteAccountDialog(context);
-                      },
+                    const Divider(color: Colors.white12, height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.info_outline, color: purple),
+                      title: const Text(
+                        'Privacy Policy',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white38, size: 16),
+                      onTap: () {},
+                    ),
+                    const Divider(color: Colors.white12, height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.description_outlined, color: purple),
+                      title: const Text(
+                        'Terms & Conditions',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white38, size: 16),
+                      onTap: () {},
                     ),
                   ],
                 ),
@@ -96,80 +139,6 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-
-  Widget _buildSettingButton(
-      BuildContext context, {
-        required String text,
-        required Color textColor,
-        required VoidCallback onTap,
-      }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 240,
-        height: 54,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            )
-          ],
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: textColor,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  void _showDeleteAccountDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text('Delete Account', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
-          content: const Text('Are you sure you want to delete your account permanently?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel', style: TextStyle(color: Colors.black54)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Account Deleted Successfully'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              },
-              child: const Text('Delete', style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        );
-      },
     );
   }
 }
